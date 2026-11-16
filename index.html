@@ -22,11 +22,7 @@
       --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -36,10 +32,7 @@
       line-height: 1.5;
     }
 
-    button, input, select {
-      font: inherit;
-      color: inherit;
-    }
+    button, input, select { font: inherit; color: inherit; }
 
     .app {
       max-width: 1400px;
@@ -50,7 +43,6 @@
       gap: 18px;
     }
 
-    /* Header */
     .topbar {
       display: flex;
       flex-wrap: wrap;
@@ -65,11 +57,7 @@
       box-shadow: var(--shadow);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .brand { display: flex; align-items: center; gap: 12px; }
 
     .brand-icon {
       width: 40px;
@@ -83,23 +71,10 @@
       flex-shrink: 0;
     }
 
-    .brand h1 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
+    .brand h1 { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.02em; }
+    .brand p { font-size: 0.8rem; color: var(--text-muted); }
 
-    .brand p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .topbar-actions {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-    }
+    .topbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 
     .status-pill {
       display: inline-flex;
@@ -113,12 +88,7 @@
       color: var(--text-muted);
     }
 
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--warning);
-    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warning); }
     .dot.ready { background: var(--success); }
 
     .btn {
@@ -133,14 +103,11 @@
       cursor: pointer;
       font-size: 0.86rem;
       font-weight: 600;
+      text-decoration: none;
       transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
     }
 
-    .btn:hover:not(:disabled) {
-      background: var(--bg-hover);
-      border-color: #3a4d6d;
-    }
-
+    .btn:hover:not(:disabled) { background: var(--bg-hover); border-color: #3a4d6d; }
     .btn:active:not(:disabled) { transform: translateY(1px); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -154,38 +121,22 @@
       background: linear-gradient(135deg, var(--accent), var(--accent-strong));
     }
 
+    .btn-warning {
+      background: rgba(245, 158, 11, 0.16);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+    .btn-warning:hover:not(:disabled) { background: rgba(245, 158, 11, 0.28); }
+
     .btn-danger {
       background: rgba(239, 68, 68, 0.14);
       color: #fca5a5;
       border-color: rgba(239, 68, 68, 0.35);
     }
-    .btn-danger:hover:not(:disabled) {
-      background: rgba(239, 68, 68, 0.25);
-    }
+    .btn-danger:hover:not(:disabled) { background: rgba(239, 68, 68, 0.25); }
 
-    .btn-sm {
-      padding: 6px 10px;
-      font-size: 0.78rem;
-      border-radius: 8px;
-    }
+    .btn-sm { padding: 6px 10px; font-size: 0.78rem; border-radius: 8px; }
 
-    /* Setup Banner */
-    .banner {
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      background: rgba(245, 158, 11, 0.1);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 0.87rem;
-    }
-
-    .banner.hidden { display: none; }
-
-    /* Main Workspace Grid */
     .workspace {
       display: grid;
       grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.95fr);
@@ -211,19 +162,9 @@
       gap: 10px;
     }
 
-    .panel-title {
-      font-size: 0.98rem;
-      font-weight: 700;
-    }
+    .panel-title { font-size: 0.98rem; font-weight: 700; }
+    .panel-body { padding: 18px; display: flex; flex-direction: column; gap: 16px; }
 
-    .panel-body {
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    /* Video Player */
     .player-shell {
       position: relative;
       width: 100%;
@@ -234,13 +175,7 @@
       border: 1px solid var(--border);
     }
 
-    .player-shell video {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: contain;
-      background: #000;
-    }
+    .player-shell video { width: 100%; height: 100%; display: block; object-fit: contain; background: #000; }
 
     .player-empty {
       position: absolute;
@@ -267,18 +202,8 @@
       border-radius: 12px;
     }
 
-    .player-meta-title {
-      font-weight: 700;
-      font-size: 1rem;
-      word-break: break-word;
-    }
-
-    .meta-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 4px;
-    }
+    .player-meta-title { font-weight: 700; font-size: 1rem; word-break: break-word; }
+    .meta-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
 
     .badge {
       font-size: 0.75rem;
@@ -295,12 +220,7 @@
       border-color: var(--border);
     }
 
-    .control-group {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-    }
+    .control-group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 
     select.input, input.input {
       background: var(--bg);
@@ -312,11 +232,8 @@
       transition: border-color 0.15s ease;
     }
 
-    select.input:focus, input.input:focus {
-      border-color: var(--accent);
-    }
+    select.input:focus, input.input:focus { border-color: var(--accent); }
 
-    /* Uploader */
     .dropzone {
       border: 2px dashed #334663;
       border-radius: 12px;
@@ -327,72 +244,38 @@
       transition: border-color 0.18s ease, background 0.18s ease;
     }
 
-    .dropzone.dragover {
-      border-color: var(--accent);
-      background: rgba(56, 189, 248, 0.08);
-    }
+    .dropzone.dragover { border-color: var(--accent); background: rgba(56, 189, 248, 0.08); }
+    .dropzone strong { display: block; font-size: 0.96rem; margin-bottom: 4px; }
+    .dropzone span { font-size: 0.82rem; color: var(--text-muted); }
 
-    .dropzone strong {
-      display: block;
-      font-size: 0.96rem;
-      margin-bottom: 4px;
-    }
+    .upload-fields { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field label { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
 
-    .dropzone span {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-
-    .upload-fields {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .field label {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .upload-queue {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .upload-queue { display: flex; flex-direction: column; gap: 10px; }
 
     .queue-item {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 10px 12px;
+      padding: 11px 13px;
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 8px;
     }
+
+    .queue-item.oversized { border-color: rgba(245, 158, 11, 0.5); }
 
     .queue-row {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
       font-size: 0.84rem;
     }
 
-    .progress-track {
-      width: 100%;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--bg);
-      overflow: hidden;
-    }
-
+    .progress-track { width: 100%; height: 7px; border-radius: 999px; background: var(--bg); overflow: hidden; }
     .progress-fill {
       height: 100%;
       width: 0%;
@@ -400,18 +283,13 @@
       transition: width 0.15s ease;
     }
 
-    /* Library */
-    .library-tools {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-    }
+    .library-tools { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
 
     .library-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      max-height: 680px;
+      max-height: 700px;
       overflow-y: auto;
       padding-right: 4px;
     }
@@ -428,15 +306,8 @@
       transition: border-color 0.15s ease, background 0.15s ease;
     }
 
-    .video-card:hover {
-      background: var(--bg-hover);
-      border-color: #3a4f70;
-    }
-
-    .video-card.active {
-      border-color: var(--accent);
-      background: rgba(56, 189, 248, 0.08);
-    }
+    .video-card:hover { background: var(--bg-hover); border-color: #3a4f70; }
+    .video-card.active { border-color: var(--accent); background: rgba(56, 189, 248, 0.08); }
 
     .thumb-wrap {
       position: relative;
@@ -447,12 +318,7 @@
       background: #060910;
     }
 
-    .thumb-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+    .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .duration-tag {
       position: absolute;
@@ -466,34 +332,11 @@
       color: #fff;
     }
 
-    .card-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-width: 0;
-      gap: 6px;
-    }
+    .card-info { display: flex; flex-direction: column; justify-content: space-between; min-width: 0; gap: 6px; }
+    .card-title { font-size: 0.88rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-sub { font-size: 0.76rem; color: var(--text-muted); }
+    .card-actions { display: flex; flex-wrap: wrap; gap: 6px; }
 
-    .card-title {
-      font-size: 0.88rem;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .card-sub {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-    }
-
-    .card-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -505,7 +348,6 @@
       padding: 16px;
       z-index: 100;
     }
-
     .modal-backdrop.open { display: flex; }
 
     .modal {
@@ -521,21 +363,8 @@
       flex-direction: column;
     }
 
-    .modal-body {
-      padding: 18px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .modal-footer {
-      padding: 14px 18px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
+    .modal-body { padding: 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+    .modal-footer { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
 
     .note {
       font-size: 0.8rem;
@@ -552,7 +381,6 @@
       background: rgba(245, 158, 11, 0.08);
     }
 
-    /* Toast */
     .toast-container {
       position: fixed;
       right: 16px;
@@ -561,7 +389,7 @@
       flex-direction: column;
       gap: 8px;
       z-index: 200;
-      max-width: 340px;
+      max-width: 360px;
     }
 
     .toast {
@@ -572,9 +400,12 @@
       box-shadow: var(--shadow);
       font-size: 0.84rem;
     }
-
     .toast.success { border-color: rgba(34, 197, 94, 0.5); }
     .toast.error { border-color: rgba(239, 68, 68, 0.55); color: #fecaca; }
+
+    @media (max-width: 1060px) {
+      .upload-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
 
     @media (max-width: 980px) {
       .workspace { grid-template-columns: 1fr; }
@@ -591,7 +422,6 @@
 </head>
 <body>
   <div class="app">
-    <!-- Top Bar -->
     <header class="topbar">
       <div class="brand">
         <div class="brand-icon">CV</div>
@@ -602,29 +432,20 @@
       </div>
 
       <div class="topbar-actions">
-        <div class="status-pill" id="connectionPill">
-          <span class="dot" id="statusDot"></span>
+        <div class="status-pill">
+          <span class="dot ready" id="statusDot"></span>
           <span id="statusText">Cloud: f4iuzezb</span>
         </div>
         <button class="btn" id="syncBtn" title="Fetch tagged videos from Cloudinary CDN">↻ Sync Tag List</button>
         <button class="btn" id="importBtn">+ Import Public ID</button>
-        <button class="btn btn-primary" id="openSettingsBtn">⚙ Upload Settings</button>
+        <button class="btn btn-primary" id="openSettingsBtn">⚙ Settings</button>
       </div>
     </header>
 
-    <!-- Setup Warning Banner -->
-    <div class="banner" id="setupBanner">
-      <div>
-        <strong>Upload setup needed:</strong> Add an <strong>Unsigned Upload Preset</strong> (recommended) or temporary local <strong>API Secret</strong> in Settings before uploading videos.
-      </div>
-      <button class="btn btn-sm btn-primary" id="bannerSettingsBtn">Configure Now</button>
-    </div>
-
-    <!-- Main Grid -->
     <main class="workspace">
       <!-- Left Column: Player + Uploader -->
       <section style="display:flex; flex-direction:column; gap:18px; min-width:0;">
-        <!-- Video Player Panel -->
+        <!-- Video Player -->
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title">Video Player</span>
@@ -671,33 +492,41 @@
           </div>
         </div>
 
-        <!-- Uploader Panel -->
+        <!-- Uploader -->
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title">Upload Videos to Cloudinary</span>
-            <span style="font-size:0.78rem; color:var(--text-muted);" id="modeLabel">Mode: Unsigned Preset</span>
+            <span style="font-size:0.78rem; color:var(--text-muted);" id="modeLabel">Signed Ready • Limit: 100 MB (Free)</span>
           </div>
 
           <div class="panel-body">
             <div class="upload-fields">
               <div class="field">
-                <label for="uploadTitleInput">Optional Title / Caption</label>
+                <label for="uploadTitleInput">Optional Title</label>
                 <input id="uploadTitleInput" class="input" type="text" placeholder="e.g. Product Demo" />
               </div>
               <div class="field">
-                <label for="uploadTagsInput">Tags (comma-separated)</label>
-                <input id="uploadTagsInput" class="input" type="text" value="video_vault" placeholder="video_vault, demo" />
+                <label for="uploadTagsInput">Tags</label>
+                <input id="uploadTagsInput" class="input" type="text" value="video_vault" placeholder="video_vault" />
               </div>
               <div class="field">
                 <label for="uploadFolderInput">Optional Folder</label>
                 <input id="uploadFolderInput" class="input" type="text" placeholder="e.g. videos" />
+              </div>
+              <div class="field">
+                <label for="planLimitSelect">Account Video Limit</label>
+                <select id="planLimitSelect" class="input">
+                  <option value="104857600" selected>100 MB (Free Plan)</option>
+                  <option value="2147483648">2 GB (Plus Plan)</option>
+                  <option value="4294967296">4 GB (Advanced Plan)</option>
+                </select>
               </div>
             </div>
 
             <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Select or drop video files">
               <input id="fileInput" type="file" accept="video/*" multiple hidden />
               <strong>Drop video files here or click to browse</strong>
-              <span>MP4, MOV, WebM, MKV • Files &gt; 95 MB automatically use 20 MB chunked upload</span>
+              <span id="dropzoneHint">MP4, MOV, WebM, MKV • Files &gt; 100 MB can be auto-compressed in-browser to fit Free plan</span>
             </div>
 
             <div class="upload-queue" id="uploadQueue"></div>
@@ -724,7 +553,6 @@
           </div>
 
           <div class="note" id="syncHint" style="display:none;"></div>
-
           <div class="library-list" id="libraryList"></div>
         </div>
       </aside>
@@ -740,44 +568,25 @@
       </div>
       <div class="modal-body">
         <div class="note warn">
-          <strong>Security reminder:</strong> Never embed your API Secret in public HTML. Use an <strong>Unsigned Upload Preset</strong> for production, or paste your credentials here only for private local use (stored in <code>sessionStorage</code> until tab closes).
+          <strong>Private Use Notice:</strong> Your <code>CLOUDINARY_URL</code> is pre-filled in this file for instant local/private use. Do not host this file on a public website without rotating your API secret or switching to an Unsigned Upload Preset.
         </div>
 
         <div class="field">
-          <label for="quickUrlInput">Quick-fill from CLOUDINARY_URL (optional)</label>
-          <div style="display:flex; gap:8px;">
-            <input id="quickUrlInput" class="input" style="flex:1;" type="password" placeholder="cloudinary://api_key:api_secret@cloud_name" />
-            <button class="btn btn-sm" id="parseUrlBtn" type="button">Parse</button>
-          </div>
+          <label for="cfgCloudinaryUrl">CLOUDINARY_URL</label>
+          <input id="cfgCloudinaryUrl" class="input" type="text" />
         </div>
 
         <div class="field">
-          <label for="cfgCloudName">Cloud Name</label>
-          <input id="cfgCloudName" class="input" type="text" value="f4iuzezb" />
-        </div>
-
-        <div class="field">
-          <label for="cfgAuthMode">Upload Authentication Mode</label>
+          <label for="cfgAuthMode">Upload Mode</label>
           <select id="cfgAuthMode" class="input">
-            <option value="unsigned">Unsigned Upload Preset (Recommended)</option>
-            <option value="signed">Signed Upload (Local/Private Session Only)</option>
+            <option value="signed">Signed Upload (Uses CLOUDINARY_URL)</option>
+            <option value="unsigned">Unsigned Upload Preset</option>
           </select>
         </div>
 
-        <div id="unsignedFields" class="field">
+        <div id="unsignedFields" class="field" style="display:none;">
           <label for="cfgUploadPreset">Unsigned Upload Preset Name</label>
-          <input id="cfgUploadPreset" class="input" type="text" placeholder="e.g. ml_default or video_unsigned" />
-        </div>
-
-        <div id="signedFields" style="display:none; flex-direction:column; gap:12px;">
-          <div class="field">
-            <label for="cfgApiKey">API Key</label>
-            <input id="cfgApiKey" class="input" type="text" value="382585666979518" />
-          </div>
-          <div class="field">
-            <label for="cfgApiSecret">API Secret (kept in sessionStorage only)</label>
-            <input id="cfgApiSecret" class="input" type="password" placeholder="Paste rotated API secret here" />
-          </div>
+          <input id="cfgUploadPreset" class="input" type="text" placeholder="e.g. ml_default" />
         </div>
 
         <div class="field">
@@ -786,7 +595,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn" id="clearSecretBtn" type="button">Clear Secret</button>
+        <button class="btn" id="closeSettingsFooterBtn" type="button">Cancel</button>
         <button class="btn btn-primary" id="saveSettingsBtn" type="button">Save Settings</button>
       </div>
     </div>
@@ -820,18 +629,30 @@
 
   <script>
     (() => {
-      const CHUNK_THRESHOLD = 95 * 1024 * 1024; // >95 MB uses chunked upload
-      const CHUNK_SIZE = 20 * 1024 * 1024;      // 20 MB chunks (Cloudinary min >= 5 MB)
+      const DEFAULT_CLOUDINARY_URL = 'cloudinary://382585666979518:__5zsST6O27qMLp3yDA5EAYZ5-w@f4iuzezb';
+      const CHUNK_THRESHOLD = 95 * 1024 * 1024;
+      const CHUNK_SIZE = 20 * 1024 * 1024;
+      const TARGET_COMPRESSED_BYTES = 92 * 1024 * 1024; // Safely under 104,857,600 bytes
+
+      function parseUrlParts(raw) {
+        const m = String(raw || '').trim().match(/^cloudinary:\/\/([^:]+):([^@]+)@([^/\s]+)$/i);
+        if (!m) return null;
+        return { apiKey: m[1], apiSecret: m[2], cloudName: m[3] };
+      }
+
+      const defaultParts = parseUrlParts(DEFAULT_CLOUDINARY_URL);
 
       const state = {
         config: {
-          cloudName: 'f4iuzezb',
-          authMode: 'unsigned',
+          cloudinaryUrl: DEFAULT_CLOUDINARY_URL,
+          cloudName: defaultParts.cloudName,
+          apiKey: defaultParts.apiKey,
+          apiSecret: defaultParts.apiSecret,
+          authMode: 'signed',
           uploadPreset: '',
-          apiKey: '382585666979518',
           syncTag: 'video_vault',
+          maxBytes: 104857600,
         },
-        apiSecret: sessionStorage.getItem('cv_api_secret') || '',
         videos: [],
         activeId: null,
       };
@@ -843,7 +664,6 @@
         statusText: el('statusText'),
         modeLabel: el('modeLabel'),
         syncTagBadge: el('syncTagBadge'),
-        setupBanner: el('setupBanner'),
         videoPlayer: el('videoPlayer'),
         playerEmpty: el('playerEmpty'),
         activeVideoBar: el('activeVideoBar'),
@@ -855,7 +675,9 @@
         copyUrlBtn: el('copyUrlBtn'),
         downloadBtn: el('downloadBtn'),
         deleteActiveBtn: el('deleteActiveBtn'),
+        planLimitSelect: el('planLimitSelect'),
         dropzone: el('dropzone'),
+        dropzoneHint: el('dropzoneHint'),
         fileInput: el('fileInput'),
         uploadTitleInput: el('uploadTitleInput'),
         uploadTagsInput: el('uploadTagsInput'),
@@ -876,7 +698,7 @@
         div.className = `toast ${type}`;
         div.textContent = message;
         dom.toastContainer.appendChild(div);
-        setTimeout(() => div.remove(), 4200);
+        setTimeout(() => div.remove(), 4500);
       }
 
       function storageKey() {
@@ -885,20 +707,16 @@
 
       function loadConfig() {
         try {
-          const saved = JSON.parse(localStorage.getItem('cv_config') || 'null');
+          const saved = JSON.parse(localStorage.getItem('cv_config_v2') || 'null');
           if (saved && typeof saved === 'object') {
             state.config = { ...state.config, ...saved };
           }
         } catch (_) {}
+        dom.planLimitSelect.value = String(state.config.maxBytes || 104857600);
       }
 
       function saveConfig() {
-        localStorage.setItem('cv_config', JSON.stringify(state.config));
-        if (state.apiSecret) {
-          sessionStorage.setItem('cv_api_secret', state.apiSecret);
-        } else {
-          sessionStorage.removeItem('cv_api_secret');
-        }
+        localStorage.setItem('cv_config_v2', JSON.stringify(state.config));
       }
 
       function loadVideos() {
@@ -912,25 +730,6 @@
 
       function saveVideos() {
         localStorage.setItem(storageKey(), JSON.stringify(state.videos));
-      }
-
-      function isUploadConfigured() {
-        if (!state.config.cloudName.trim()) return false;
-        if (state.config.authMode === 'unsigned') {
-          return Boolean(state.config.uploadPreset.trim());
-        }
-        return Boolean(state.config.apiKey.trim() && state.apiSecret.trim());
-      }
-
-      function updateStatusUI() {
-        const ready = isUploadConfigured();
-        dom.statusDot.classList.toggle('ready', ready);
-        dom.statusText.textContent = `Cloud: ${state.config.cloudName || '—'}`;
-        dom.setupBanner.classList.toggle('hidden', ready);
-        dom.modeLabel.textContent = state.config.authMode === 'unsigned'
-          ? `Mode: Unsigned (${state.config.uploadPreset || 'no preset'})`
-          : 'Mode: Signed (Session)';
-        dom.syncTagBadge.textContent = `Tag: ${state.config.syncTag || 'video_vault'}`;
       }
 
       function formatBytes(bytes) {
@@ -961,15 +760,32 @@
         })[m]);
       }
 
+      function isUploadConfigured() {
+        if (!state.config.cloudName) return false;
+        if (state.config.authMode === 'unsigned') return Boolean(state.config.uploadPreset);
+        return Boolean(state.config.apiKey && state.config.apiSecret);
+      }
+
+      function updateStatusUI() {
+        const ready = isUploadConfigured();
+        dom.statusDot.classList.toggle('ready', ready);
+        dom.statusText.textContent = `Cloud: ${state.config.cloudName}`;
+        const limitLabel = formatBytes(state.config.maxBytes);
+        dom.modeLabel.textContent = `${state.config.authMode === 'signed' ? 'Signed Ready' : 'Unsigned'} • Max: ${limitLabel}`;
+        dom.syncTagBadge.textContent = `Tag: ${state.config.syncTag || 'video_vault'}`;
+        dom.dropzoneHint.textContent = state.config.maxBytes <= 104857600
+          ? 'MP4, MOV, WebM, MKV • Free limit: 100 MB (104,857,600 B) — larger files offer in-browser compression'
+          : `MP4, MOV, WebM, MKV • Max: ${limitLabel} (20 MB chunked upload above 95 MB)`;
+      }
+
       function buildDeliveryUrl(video, quality) {
         if (quality === 'original' && video.secure_url) return video.secure_url;
         const cloud = video.cloud_name || state.config.cloudName;
         const ver = video.version ? `v${video.version}/` : '';
-        const pid = video.public_id;
         let trans = 'f_auto,q_auto';
         if (quality === '720p') trans = 'c_limit,h_720,f_auto,q_auto';
         else if (quality === '480p') trans = 'c_limit,h_480,f_auto,q_auto';
-        return `https://res.cloudinary.com/${encodeURIComponent(cloud)}/video/upload/${trans}/${ver}${pid}.mp4`;
+        return `https://res.cloudinary.com/${encodeURIComponent(cloud)}/video/upload/${trans}/${ver}${video.public_id}.mp4`;
       }
 
       function buildPosterUrl(video) {
@@ -1084,12 +900,9 @@
           }, { once: true });
         }
 
-        if (autoplay) {
-          dom.videoPlayer.play().catch(() => {});
-        }
+        if (autoplay) dom.videoPlayer.play().catch(() => {});
 
-        const title = video.title || video.public_id.split('/').pop();
-        dom.activeTitle.textContent = title;
+        dom.activeTitle.textContent = video.title || video.public_id.split('/').pop();
         dom.downloadBtn.href = video.secure_url || url;
 
         const badges = [];
@@ -1104,9 +917,6 @@
 
         const canRemoteDelete = Boolean(video.delete_token && (Date.now() - (video.uploaded_at_ms || 0) < 9.5 * 60 * 1000));
         dom.deleteActiveBtn.textContent = canRemoteDelete ? 'Delete from Cloud' : 'Remove';
-        dom.deleteActiveBtn.title = canRemoteDelete
-          ? 'Deletes from Cloudinary using temporary delete_token (valid 10 min)'
-          : 'Removes from local library (permanent cloud delete requires Cloudinary Console)';
       }
 
       async function copyVideoUrl(video) {
@@ -1122,17 +932,13 @@
       function removeLocalVideo(publicId) {
         state.videos = state.videos.filter((v) => v.public_id !== publicId);
         saveVideos();
-        if (state.activeId === publicId) {
-          selectVideo(state.videos[0]?.public_id || null, false);
-        } else {
-          renderLibrary();
-        }
+        if (state.activeId === publicId) selectVideo(state.videos[0]?.public_id || null, false);
+        else renderLibrary();
       }
 
       async function deleteActiveVideo() {
         const video = state.videos.find((v) => v.public_id === state.activeId);
         if (!video) return;
-
         const canRemoteDelete = Boolean(video.delete_token && (Date.now() - (video.uploaded_at_ms || 0) < 9.5 * 60 * 1000));
         if (canRemoteDelete) {
           try {
@@ -1148,18 +954,15 @@
             toast(err.message || 'Cloud delete failed; removing locally', 'error');
           }
         } else {
-          toast('Removed from local library (delete permanently in Cloudinary Console)', 'info');
+          toast('Removed from local library', 'info');
         }
         removeLocalVideo(video.public_id);
       }
 
-      // Pure-JS SHA-1 fallback for file:// contexts without crypto.subtle
       function sha1PureJs(str) {
         const utf8 = unescape(encodeURIComponent(str));
         const words = [];
-        for (let i = 0; i < utf8.length; i++) {
-          words[i >> 2] |= utf8.charCodeAt(i) << (24 - (i % 4) * 8);
-        }
+        for (let i = 0; i < utf8.length; i++) words[i >> 2] |= utf8.charCodeAt(i) << (24 - (i % 4) * 8);
         words[utf8.length >> 2] |= 0x80 << (24 - (utf8.length % 4) * 8);
         words[(((utf8.length + 8) >> 6) << 4) + 15] = utf8.length * 8;
 
@@ -1204,21 +1007,14 @@
           .sort()
           .map((k) => `${k}=${signable[k]}`)
           .join('&');
-        const signature = await sha1Hex(serialized + state.apiSecret.trim());
-        return {
-          ...signable,
-          api_key: state.config.apiKey.trim(),
-          signature,
-        };
+        const signature = await sha1Hex(serialized + state.config.apiSecret.trim());
+        return { ...signable, api_key: state.config.apiKey.trim(), signature };
       }
 
       function upsertVideo(record) {
         const idx = state.videos.findIndex((v) => v.public_id === record.public_id);
-        if (idx >= 0) {
-          state.videos[idx] = { ...state.videos[idx], ...record };
-        } else {
-          state.videos.unshift(record);
-        }
+        if (idx >= 0) state.videos[idx] = { ...state.videos[idx], ...record };
+        else state.videos.unshift(record);
         saveVideos();
         renderLibrary();
       }
@@ -1268,9 +1064,133 @@
         });
       }
 
+      // In-browser video compressor targeting <= 92 MB so it fits Cloudinary's 104,857,600 B Free plan limit
+      async function compressVideoInBrowser(file, onProgress, registerCancel) {
+        const mimeCandidates = [
+          'video/webm;codecs=vp9,opus',
+          'video/webm;codecs=vp8,opus',
+          'video/webm',
+          'video/mp4',
+        ];
+        const mimeType = mimeCandidates.find((m) => window.MediaRecorder && MediaRecorder.isTypeSupported(m));
+        if (!mimeType) throw new Error('Browser MediaRecorder not supported for video compression');
+
+        const url = URL.createObjectURL(file);
+        const video = document.createElement('video');
+        video.src = url;
+        video.playsInline = true;
+        video.preload = 'auto';
+
+        await new Promise((resolve, reject) => {
+          video.onloadedmetadata = resolve;
+          video.onerror = () => reject(new Error('Could not decode this video format in browser'));
+        });
+
+        const duration = video.duration;
+        if (!duration || !isFinite(duration)) {
+          URL.revokeObjectURL(url);
+          throw new Error('Could not determine video duration');
+        }
+
+        // Scale down to max 1280x720 keeping even dimensions
+        const scale = Math.min(1, 1280 / (video.videoWidth || 1280), 720 / (video.videoHeight || 720));
+        const width = Math.max(2, Math.floor((video.videoWidth * scale) / 2) * 2);
+        const height = Math.max(2, Math.floor((video.videoHeight * scale) / 2) * 2);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+
+        // Silent audio capture via AudioContext (captures full audio without playing out loud)
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioCtx();
+        await audioCtx.resume();
+        const sourceNode = audioCtx.createMediaElementSource(video);
+        const destNode = audioCtx.createMediaStreamDestination();
+        sourceNode.connect(destNode);
+
+        const canvasStream = canvas.captureStream(30);
+        const combinedTracks = [
+          ...canvasStream.getVideoTracks(),
+          ...destNode.stream.getAudioTracks(),
+        ];
+        const combinedStream = new MediaStream(combinedTracks);
+
+        const totalBitsBudget = TARGET_COMPRESSED_BYTES * 8;
+        const audioBps = 96000;
+        const videoBps = Math.max(220000, Math.min(3500000, Math.floor(totalBitsBudget / duration - audioBps)));
+
+        const recorder = new MediaRecorder(combinedStream, {
+          mimeType,
+          videoBitsPerSecond: videoBps,
+          audioBitsPerSecond: audioBps,
+        });
+
+        const chunks = [];
+        let cancelled = false;
+        let rafId = null;
+
+        const cleanup = () => {
+          if (rafId) cancelAnimationFrame(rafId);
+          video.pause();
+          URL.revokeObjectURL(url);
+          combinedStream.getTracks().forEach((t) => t.stop());
+          audioCtx.close().catch(() => {});
+        };
+
+        registerCancel(() => {
+          cancelled = true;
+          if (recorder.state !== 'inactive') recorder.stop();
+          cleanup();
+        });
+
+        return new Promise((resolve, reject) => {
+          recorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) chunks.push(e.data);
+          };
+
+          recorder.onerror = () => {
+            cleanup();
+            reject(new Error('Compression failed in browser'));
+          };
+
+          recorder.onstop = () => {
+            cleanup();
+            if (cancelled) {
+              reject(new Error('Compression cancelled'));
+              return;
+            }
+            const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
+            const outBlob = new Blob(chunks, { type: mimeType.split(';')[0] });
+            const baseName = file.name.replace(/\.[^/.]+$/, '');
+            const outFile = new File([outBlob], `${baseName}_compressed.${ext}`, { type: outBlob.type });
+            resolve(outFile);
+          };
+
+          const drawFrame = () => {
+            if (cancelled || video.paused || video.ended) return;
+            ctx.drawImage(video, 0, 0, width, height);
+            onProgress(Math.min(99, Math.round((video.currentTime / duration) * 100)));
+            rafId = requestAnimationFrame(drawFrame);
+          };
+
+          video.onended = () => {
+            onProgress(100);
+            if (recorder.state !== 'inactive') recorder.stop();
+          };
+
+          recorder.start(1000);
+          video.play().then(drawFrame).catch((err) => {
+            if (recorder.state !== 'inactive') recorder.stop();
+            reject(err);
+          });
+        });
+      }
+
       async function handleFiles(fileList) {
         if (!isUploadConfigured()) {
-          toast('Please configure an Unsigned Preset or Signed Secret in Settings first.', 'error');
+          toast('Configure CLOUDINARY_URL or Unsigned Preset in Settings first.', 'error');
           openModal(dom.settingsModal);
           return;
         }
@@ -1281,13 +1201,91 @@
           return;
         }
 
-        const titleInput = dom.uploadTitleInput.value.trim();
-        const tags = dom.uploadTagsInput.value.trim() || state.config.syncTag || 'video_vault';
-        const folder = dom.uploadFolderInput.value.trim();
+        const opts = {
+          title: dom.uploadTitleInput.value.trim(),
+          tags: dom.uploadTagsInput.value.trim() || state.config.syncTag || 'video_vault',
+          folder: dom.uploadFolderInput.value.trim(),
+        };
 
         for (const file of files) {
-          await uploadVideoFile(file, { title: titleInput, tags, folder });
+          if (file.size > state.config.maxBytes) {
+            createOversizedCard(file, opts);
+          } else {
+            await uploadVideoFile(file, opts);
+          }
         }
+      }
+
+      function createOversizedCard(file, opts) {
+        const card = document.createElement('div');
+        card.className = 'queue-item oversized';
+        card.innerHTML = `
+          <div class="queue-row">
+            <strong style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(file.name)}</strong>
+            <span style="color:#fcd34d; font-weight:600; flex-shrink:0;">${formatBytes(file.size)} &gt; ${formatBytes(state.config.maxBytes)}</span>
+          </div>
+          <div style="font-size:0.78rem; color:var(--text-muted);">
+            Cloudinary's Free plan rejects videos over <strong>104,857,600 bytes (100 MB)</strong>. Compress in-browser to ≤ 92 MB (plays silently in real-time during encoding) or upload directly if you upgraded to Plus/Advanced.
+          </div>
+          <div class="progress-track" style="display:none;"><div class="progress-fill"></div></div>
+          <div class="queue-row">
+            <span class="comp-status" style="font-size:0.76rem; color:var(--text-muted);">Ready</span>
+            <div class="control-group">
+              <button class="btn btn-sm btn-warning compress-btn">Compress &amp; Upload</button>
+              <button class="btn btn-sm force-btn">Upload Anyway</button>
+              <button class="btn btn-sm dismiss-btn">Dismiss</button>
+            </div>
+          </div>
+        `;
+        dom.uploadQueue.prepend(card);
+
+        const compressBtn = card.querySelector('.compress-btn');
+        const forceBtn = card.querySelector('.force-btn');
+        const dismissBtn = card.querySelector('.dismiss-btn');
+        const track = card.querySelector('.progress-track');
+        const fill = card.querySelector('.progress-fill');
+        const statusEl = card.querySelector('.comp-status');
+
+        let cancelCompress = null;
+
+        dismissBtn.onclick = () => {
+          if (cancelCompress) cancelCompress();
+          card.remove();
+        };
+
+        forceBtn.onclick = async () => {
+          card.remove();
+          await uploadVideoFile(file, opts);
+        };
+
+        compressBtn.onclick = async () => {
+          compressBtn.disabled = true;
+          forceBtn.disabled = true;
+          dismissBtn.textContent = 'Cancel';
+          track.style.display = 'block';
+          statusEl.textContent = 'Compressing in browser (real-time)...';
+
+          try {
+            const compressed = await compressVideoInBrowser(
+              file,
+              (pct) => {
+                fill.style.width = `${pct}%`;
+                statusEl.textContent = `Compressing: ${pct}%`;
+              },
+              (fn) => { cancelCompress = fn; }
+            );
+            toast(`Compressed to ${formatBytes(compressed.size)}. Uploading...`, 'success');
+            card.remove();
+            await uploadVideoFile(compressed, opts);
+          } catch (err) {
+            statusEl.textContent = err.message;
+            statusEl.style.color = 'var(--danger)';
+            compressBtn.disabled = false;
+            forceBtn.disabled = false;
+            dismissBtn.textContent = 'Dismiss';
+            toast(err.message, 'error');
+          }
+        };
       }
 
       async function uploadVideoFile(file, opts) {
@@ -1302,7 +1300,7 @@
           </div>
           <div class="progress-track"><div class="progress-fill"></div></div>
           <div class="queue-row" style="font-size:0.76rem; color:var(--text-muted);">
-            <span>${formatBytes(file.size)}${file.size > CHUNK_THRESHOLD ? ' • Chunked' : ''}</span>
+            <span>${formatBytes(file.size)}${file.size > CHUNK_THRESHOLD ? ' • 20 MB Chunked' : ''}</span>
             <button class="btn btn-sm cancel-btn">Cancel</button>
           </div>
         `;
@@ -1407,11 +1405,11 @@
           if (!res.ok) {
             if (res.status === 401 || res.status === 403) {
               dom.syncHint.style.display = 'block';
-              dom.syncHint.innerHTML = `<strong>Tag sync restricted (${res.status}):</strong> In Cloudinary Console go to <em>Settings → Security → Restricted image types</em> and uncheck <strong>Resource list</strong> to enable public JSON listing for tag <code>${escapeHtml(tag)}</code>.`;
+              dom.syncHint.innerHTML = `<strong>Tag sync restricted (${res.status}):</strong> In Cloudinary Console go to <em>Settings → Security → Restricted image types</em> and uncheck <strong>Resource list</strong> to allow listing tag <code>${escapeHtml(tag)}</code>.`;
               return;
             }
             if (res.status === 404) {
-              toast(`No videos found on Cloudinary yet with tag "${tag}"`, 'info');
+              toast(`No videos found yet with tag "${tag}"`, 'info');
               return;
             }
             throw new Error(`Sync failed (${res.status})`);
@@ -1440,49 +1438,22 @@
             if (!exists) added++;
           }
 
-          if (!state.activeId && state.videos[0]) {
-            selectVideo(state.videos[0].public_id, false);
-          }
+          if (!state.activeId && state.videos[0]) selectVideo(state.videos[0].public_id, false);
           toast(`Synced ${resources.length} tagged video(s)${added ? ` (${added} new)` : ''}`, 'success');
         } catch (err) {
           toast(err.message || 'Could not sync tag list', 'error');
         }
       }
 
-      // Modals
       function openModal(modal) { modal.classList.add('open'); }
       function closeModal(modal) { modal.classList.remove('open'); }
 
       function populateSettingsModal() {
-        el('cfgCloudName').value = state.config.cloudName;
+        el('cfgCloudinaryUrl').value = state.config.cloudinaryUrl;
         el('cfgAuthMode').value = state.config.authMode;
         el('cfgUploadPreset').value = state.config.uploadPreset;
-        el('cfgApiKey').value = state.config.apiKey;
-        el('cfgApiSecret').value = state.apiSecret;
         el('cfgSyncTag').value = state.config.syncTag;
-        toggleAuthFields();
-      }
-
-      function toggleAuthFields() {
-        const signed = el('cfgAuthMode').value === 'signed';
-        el('unsignedFields').style.display = signed ? 'none' : 'flex';
-        el('signedFields').style.display = signed ? 'flex' : 'none';
-      }
-
-      function parseCloudinaryUrl() {
-        const raw = el('quickUrlInput').value.trim();
-        const match = raw.match(/^cloudinary:\/\/([^:]+):([^@]+)@([^/\s]+)$/i);
-        if (!match) {
-          toast('Invalid format. Expected cloudinary://api_key:api_secret@cloud_name', 'error');
-          return;
-        }
-        el('cfgApiKey').value = match[1];
-        el('cfgApiSecret').value = match[2];
-        el('cfgCloudName').value = match[3];
-        el('cfgAuthMode').value = 'signed';
-        toggleAuthFields();
-        el('quickUrlInput').value = '';
-        toast('Parsed into Signed session fields (save to apply)', 'success');
+        el('unsignedFields').style.display = state.config.authMode === 'unsigned' ? 'flex' : 'none';
       }
 
       function importManualVideo() {
@@ -1526,25 +1497,26 @@
 
       // Wire events
       el('openSettingsBtn').onclick = () => { populateSettingsModal(); openModal(dom.settingsModal); };
-      el('bannerSettingsBtn').onclick = () => { populateSettingsModal(); openModal(dom.settingsModal); };
       el('closeSettingsBtn').onclick = () => closeModal(dom.settingsModal);
-      el('cfgAuthMode').onchange = toggleAuthFields;
-      el('parseUrlBtn').onclick = parseCloudinaryUrl;
-
-      el('clearSecretBtn').onclick = () => {
-        state.apiSecret = '';
-        el('cfgApiSecret').value = '';
-        sessionStorage.removeItem('cv_api_secret');
-        toast('Session API Secret cleared', 'info');
+      el('closeSettingsFooterBtn').onclick = () => closeModal(dom.settingsModal);
+      el('cfgAuthMode').onchange = () => {
+        el('unsignedFields').style.display = el('cfgAuthMode').value === 'unsigned' ? 'flex' : 'none';
       };
 
       el('saveSettingsBtn').onclick = () => {
-        state.config.cloudName = el('cfgCloudName').value.trim() || 'f4iuzezb';
+        const rawUrl = el('cfgCloudinaryUrl').value.trim();
+        const parts = parseUrlParts(rawUrl);
+        if (!parts) {
+          toast('Invalid CLOUDINARY_URL format', 'error');
+          return;
+        }
+        state.config.cloudinaryUrl = rawUrl;
+        state.config.apiKey = parts.apiKey;
+        state.config.apiSecret = parts.apiSecret;
+        state.config.cloudName = parts.cloudName;
         state.config.authMode = el('cfgAuthMode').value;
         state.config.uploadPreset = el('cfgUploadPreset').value.trim();
-        state.config.apiKey = el('cfgApiKey').value.trim();
         state.config.syncTag = el('cfgSyncTag').value.trim() || 'video_vault';
-        state.apiSecret = el('cfgApiSecret').value.trim();
 
         saveConfig();
         loadVideos();
@@ -1552,6 +1524,12 @@
         renderLibrary();
         closeModal(dom.settingsModal);
         toast('Settings saved', 'success');
+      };
+
+      dom.planLimitSelect.onchange = () => {
+        state.config.maxBytes = Number(dom.planLimitSelect.value) || 104857600;
+        saveConfig();
+        updateStatusUI();
       };
 
       el('importBtn').onclick = () => openModal(dom.importModal);
@@ -1576,7 +1554,7 @@
           if (document.pictureInPictureElement) await document.exitPictureInPicture();
           else if (dom.videoPlayer.readyState >= 1) await dom.videoPlayer.requestPictureInPicture();
         } catch {
-          toast('Picture-in-Picture unavailable for this video', 'error');
+          toast('Picture-in-Picture unavailable', 'error');
         }
       };
 
@@ -1587,7 +1565,6 @@
 
       dom.deleteActiveBtn.onclick = deleteActiveVideo;
 
-      // Dropzone & file input
       dom.dropzone.onclick = () => dom.fileInput.click();
       dom.dropzone.onkeydown = (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -1616,7 +1593,6 @@
         if (e.dataTransfer?.files?.length) handleFiles(e.dataTransfer.files);
       });
 
-      // Init
       loadConfig();
       loadVideos();
       updateStatusUI();
