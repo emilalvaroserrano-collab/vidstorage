@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CloudVault — Cloudinary Video Storage & Player</title>
+  <style>
+    :root {
+      --bg: #0b0f17;
+      --bg-elevated: #131a26;
+      --bg-card: #182131;
+      --bg-hover: #1f2b40;
+      --border: #27344a;
+      --text: #eef3fb;
+      --text-muted: #93a4be;
+      --accent: #38bdf8;
+      --accent-strong: #0284c7;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 14px;
+      --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top right, #162238 0%, var(--bg) 55%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    button, input, select {
+      font: inherit;
+      color: inherit;
+    }
+
+    .app {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* Header */
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 18px;
+      background: rgba(19, 26, 38, 0.88);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), #6366f1);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #07111f;
+      flex-shrink: 0;
+    }
+
+    .brand h1 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .topbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--warning);
+    }
+    .dot.ready { background: var(--success); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      cursor: pointer;
+      font-size: 0.86rem;
+      font-weight: 600;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--bg-hover);
+      border-color: #3a4d6d;
+    }
+
+    .btn:active:not(:disabled) { transform: translateY(1px); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #04131f;
+      border-color: transparent;
+    }
+    .btn-primary:hover:not(:disabled) {
+      filter: brightness(1.08);
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.14);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.35);
+    }
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      border-radius: 8px;
+    }
+
+    /* Setup Banner */
+    .banner {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.1);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.87rem;
+    }
+
+    .banner.hidden { display: none; }
+
+    /* Main Workspace Grid */
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.95fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .panel-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+    }
+
+    .panel-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Video Player */
+    .player-shell {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #05070c;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .player-shell video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .player-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+      gap: 8px;
+    }
+
+    .player-controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .player-meta-title {
+      font-weight: 700;
+      font-size: 1rem;
+      word-break: break-word;
+    }
+
+    .meta-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .badge.neutral {
+      background: rgba(147, 164, 190, 0.12);
+      color: var(--text-muted);
+      border-color: var(--border);
+    }
+
+    .control-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    select.input, input.input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 11px;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    select.input:focus, input.input:focus {
+      border-color: var(--accent);
+    }
+
+    /* Uploader */
+    .dropzone {
+      border: 2px dashed #334663;
+      border-radius: 12px;
+      padding: 24px 18px;
+      text-align: center;
+      background: rgba(11, 15, 23, 0.55);
+      cursor: pointer;
+      transition: border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .dropzone.dragover {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    .dropzone strong {
+      display: block;
+      font-size: 0.96rem;
+      margin-bottom: 4px;
+    }
+
+    .dropzone span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .upload-fields {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .upload-queue {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .queue-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .queue-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.84rem;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #6366f1);
+      transition: width 0.15s ease;
+    }
+
+    /* Library */
+    .library-tools {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .library-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 680px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .video-card {
+      display: grid;
+      grid-template-columns: 132px minmax(0, 1fr);
+      gap: 12px;
+      padding: 10px;
+      border-radius: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .video-card:hover {
+      background: var(--bg-hover);
+      border-color: #3a4f70;
+    }
+
+    .video-card.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    .thumb-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #060910;
+    }
+
+    .thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .duration-tag {
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.78);
+      color: #fff;
+    }
+
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+      gap: 6px;
+    }
+
+    .card-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 6, 12, 0.75);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      width: 100%;
+      max-width: 560px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-body {
+      padding: 18px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .modal-footer {
+      padding: 14px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 10px;
+    }
+
+    .note.warn {
+      border-color: rgba(245, 158, 11, 0.35);
+      color: #fcd34d;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 200;
+      max-width: 340px;
+    }
+
+    .toast {
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      font-size: 0.84rem;
+    }
+
+    .toast.success { border-color: rgba(34, 197, 94, 0.5); }
+    .toast.error { border-color: rgba(239, 68, 68, 0.55); color: #fecaca; }
+
+    @media (max-width: 980px) {
+      .workspace { grid-template-columns: 1fr; }
+      .library-list { max-height: 460px; }
+    }
+
+    @media (max-width: 640px) {
+      .app { padding: 12px; }
+      .upload-fields { grid-template-columns: 1fr; }
+      .library-tools { grid-template-columns: 1fr; }
+      .video-card { grid-template-columns: 108px minmax(0, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon">CV</div>
+        <div>
+          <h1>CloudVault Video Studio</h1>
+          <p>Responsive Cloudinary Video Uploader, Storage &amp; Player</p>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="status-pill" id="connectionPill">
+          <span class="dot" id="statusDot"></span>
+          <span id="statusText">Cloud: f4iuzezb</span>
+        </div>
+        <button class="btn" id="syncBtn" title="Fetch tagged videos from Cloudinary CDN">↻ Sync Tag List</button>
+        <button class="btn" id="importBtn">+ Import Public ID</button>
+        <button class="btn btn-primary" id="openSettingsBtn">⚙ Upload Settings</button>
+      </div>
+    </header>
+
+    <!-- Setup Warning Banner -->
+    <div class="banner" id="setupBanner">
+      <div>
+        <strong>Upload setup needed:</strong> Add an <strong>Unsigned Upload Preset</strong> (recommended) or temporary local <strong>API Secret</strong> in Settings before uploading videos.
+      </div>
+      <button class="btn btn-sm btn-primary" id="bannerSettingsBtn">Configure Now</button>
+    </div>
+
+    <!-- Main Grid -->
+    <main class="workspace">
+      <!-- Left Column: Player + Uploader -->
+      <section style="display:flex; flex-direction:column; gap:18px; min-width:0;">
+        <!-- Video Player Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Video Player</span>
+            <div class="control-group">
+              <label for="qualitySelect" style="font-size:0.78rem; color:var(--text-muted);">Stream:</label>
+              <select id="qualitySelect" class="input" style="padding:5px 9px; font-size:0.8rem;">
+                <option value="auto">Auto Optimized (f_auto,q_auto)</option>
+                <option value="720p">HD 720p (h_720,q_auto)</option>
+                <option value="480p">SD 480p (h_480,q_auto)</option>
+                <option value="original">Original Source</option>
+              </select>
+              <select id="speedSelect" class="input" style="padding:5px 9px; font-size:0.8rem;" title="Playback Speed">
+                <option value="0.5">0.5x</option>
+                <option value="1" selected>1.0x</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2.0x</option>
+              </select>
+              <button class="btn btn-sm" id="pipBtn" title="Picture-in-Picture">PiP</button>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <div class="player-shell">
+              <video id="videoPlayer" controls playsinline preload="metadata"></video>
+              <div class="player-empty" id="playerEmpty">
+                <div style="font-size:1.8rem;">🎬</div>
+                <strong>No video selected</strong>
+                <span style="font-size:0.85rem;">Upload a video below or choose one from your Storage Library.</span>
+              </div>
+            </div>
+
+            <div class="player-controls-bar" id="activeVideoBar" style="display:none;">
+              <div style="min-width:0; flex:1;">
+                <div class="player-meta-title" id="activeTitle">—</div>
+                <div class="meta-badges" id="activeBadges"></div>
+              </div>
+              <div class="control-group">
+                <button class="btn btn-sm" id="copyUrlBtn">Copy URL</button>
+                <a class="btn btn-sm" id="downloadBtn" download target="_blank" rel="noopener">Download</a>
+                <button class="btn btn-sm btn-danger" id="deleteActiveBtn">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Uploader Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Upload Videos to Cloudinary</span>
+            <span style="font-size:0.78rem; color:var(--text-muted);" id="modeLabel">Mode: Unsigned Preset</span>
+          </div>
+
+          <div class="panel-body">
+            <div class="upload-fields">
+              <div class="field">
+                <label for="uploadTitleInput">Optional Title / Caption</label>
+                <input id="uploadTitleInput" class="input" type="text" placeholder="e.g. Product Demo" />
+              </div>
+              <div class="field">
+                <label for="uploadTagsInput">Tags (comma-separated)</label>
+                <input id="uploadTagsInput" class="input" type="text" value="video_vault" placeholder="video_vault, demo" />
+              </div>
+              <div class="field">
+                <label for="uploadFolderInput">Optional Folder</label>
+                <input id="uploadFolderInput" class="input" type="text" placeholder="e.g. videos" />
+              </div>
+            </div>
+
+            <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Select or drop video files">
+              <input id="fileInput" type="file" accept="video/*" multiple hidden />
+              <strong>Drop video files here or click to browse</strong>
+              <span>MP4, MOV, WebM, MKV • Files &gt; 95 MB automatically use 20 MB chunked upload</span>
+            </div>
+
+            <div class="upload-queue" id="uploadQueue"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Video Storage Library -->
+      <aside class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Video Storage (<span id="videoCount">0</span>)</span>
+          <span style="font-size:0.78rem; color:var(--text-muted);" id="syncTagBadge">Tag: video_vault</span>
+        </div>
+
+        <div class="panel-body">
+          <div class="library-tools">
+            <input id="searchInput" class="input" type="search" placeholder="Search title, public_id, or tag..." />
+            <select id="sortSelect" class="input">
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="largest">Largest</option>
+              <option value="name">Name A–Z</option>
+            </select>
+          </div>
+
+          <div class="note" id="syncHint" style="display:none;"></div>
+
+          <div class="library-list" id="libraryList"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsHeading">
+      <div class="panel-header">
+        <span class="panel-title" id="settingsHeading">Cloudinary Configuration</span>
+        <button class="btn btn-sm" id="closeSettingsBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="note warn">
+          <strong>Security reminder:</strong> Never embed your API Secret in public HTML. Use an <strong>Unsigned Upload Preset</strong> for production, or paste your credentials here only for private local use (stored in <code>sessionStorage</code> until tab closes).
+        </div>
+
+        <div class="field">
+          <label for="quickUrlInput">Quick-fill from CLOUDINARY_URL (optional)</label>
+          <div style="display:flex; gap:8px;">
+            <input id="quickUrlInput" class="input" style="flex:1;" type="password" placeholder="cloudinary://api_key:api_secret@cloud_name" />
+            <button class="btn btn-sm" id="parseUrlBtn" type="button">Parse</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cfgCloudName">Cloud Name</label>
+          <input id="cfgCloudName" class="input" type="text" value="f4iuzezb" />
+        </div>
+
+        <div class="field">
+          <label for="cfgAuthMode">Upload Authentication Mode</label>
+          <select id="cfgAuthMode" class="input">
+            <option value="unsigned">Unsigned Upload Preset (Recommended)</option>
+            <option value="signed">Signed Upload (Local/Private Session Only)</option>
+          </select>
+        </div>
+
+        <div id="unsignedFields" class="field">
+          <label for="cfgUploadPreset">Unsigned Upload Preset Name</label>
+          <input id="cfgUploadPreset" class="input" type="text" placeholder="e.g. ml_default or video_unsigned" />
+        </div>
+
+        <div id="signedFields" style="display:none; flex-direction:column; gap:12px;">
+          <div class="field">
+            <label for="cfgApiKey">API Key</label>
+            <input id="cfgApiKey" class="input" type="text" value="382585666979518" />
+          </div>
+          <div class="field">
+            <label for="cfgApiSecret">API Secret (kept in sessionStorage only)</label>
+            <input id="cfgApiSecret" class="input" type="password" placeholder="Paste rotated API secret here" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cfgSyncTag">Default Library Sync Tag</label>
+          <input id="cfgSyncTag" class="input" type="text" value="video_vault" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="clearSecretBtn" type="button">Clear Secret</button>
+        <button class="btn btn-primary" id="saveSettingsBtn" type="button">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Modal -->
+  <div class="modal-backdrop" id="importModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="importHeading">
+      <div class="panel-header">
+        <span class="panel-title" id="importHeading">Import Existing Cloudinary Video</span>
+        <button class="btn btn-sm" id="closeImportBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label for="importPublicId">Cloudinary Public ID or Full Video URL</label>
+          <input id="importPublicId" class="input" type="text" placeholder="e.g. samples/elephants or https://res.cloudinary.com/.../video.mp4" />
+        </div>
+        <div class="field">
+          <label for="importTitle">Display Title (optional)</label>
+          <input id="importTitle" class="input" type="text" placeholder="My Existing Video" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="cancelImportBtn" type="button">Cancel</button>
+        <button class="btn btn-primary" id="confirmImportBtn" type="button">Add to Library</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    (() => {
+      const CHUNK_THRESHOLD = 95 * 1024 * 1024; // >95 MB uses chunked upload
+      const CHUNK_SIZE = 20 * 1024 * 1024;      // 20 MB chunks (Cloudinary min >= 5 MB)
+
+      const state = {
+        config: {
+          cloudName: 'f4iuzezb',
+          authMode: 'unsigned',
+          uploadPreset: '',
+          apiKey: '382585666979518',
+          syncTag: 'video_vault',
+        },
+        apiSecret: sessionStorage.getItem('cv_api_secret') || '',
+        videos: [],
+        activeId: null,
+      };
+
+      const el = (id) => document.getElementById(id);
+
+      const dom = {
+        statusDot: el('statusDot'),
+        statusText: el('statusText'),
+        modeLabel: el('modeLabel'),
+        syncTagBadge: el('syncTagBadge'),
+        setupBanner: el('setupBanner'),
+        videoPlayer: el('videoPlayer'),
+        playerEmpty: el('playerEmpty'),
+        activeVideoBar: el('activeVideoBar'),
+        activeTitle: el('activeTitle'),
+        activeBadges: el('activeBadges'),
+        qualitySelect: el('qualitySelect'),
+        speedSelect: el('speedSelect'),
+        pipBtn: el('pipBtn'),
+        copyUrlBtn: el('copyUrlBtn'),
+        downloadBtn: el('downloadBtn'),
+        deleteActiveBtn: el('deleteActiveBtn'),
+        dropzone: el('dropzone'),
+        fileInput: el('fileInput'),
+        uploadTitleInput: el('uploadTitleInput'),
+        uploadTagsInput: el('uploadTagsInput'),
+        uploadFolderInput: el('uploadFolderInput'),
+        uploadQueue: el('uploadQueue'),
+        libraryList: el('libraryList'),
+        videoCount: el('videoCount'),
+        searchInput: el('searchInput'),
+        sortSelect: el('sortSelect'),
+        syncHint: el('syncHint'),
+        settingsModal: el('settingsModal'),
+        importModal: el('importModal'),
+        toastContainer: el('toastContainer'),
+      };
+
+      function toast(message, type = 'info') {
+        const div = document.createElement('div');
+        div.className = `toast ${type}`;
+        div.textContent = message;
+        dom.toastContainer.appendChild(div);
+        setTimeout(() => div.remove(), 4200);
+      }
+
+      function storageKey() {
+        return `cv_videos_${state.config.cloudName || 'default'}`;
+      }
+
+      function loadConfig() {
+        try {
+          const saved = JSON.parse(localStorage.getItem('cv_config') || 'null');
+          if (saved && typeof saved === 'object') {
+            state.config = { ...state.config, ...saved };
+          }
+        } catch (_) {}
+      }
+
+      function saveConfig() {
+        localStorage.setItem('cv_config', JSON.stringify(state.config));
+        if (state.apiSecret) {
+          sessionStorage.setItem('cv_api_secret', state.apiSecret);
+        } else {
+          sessionStorage.removeItem('cv_api_secret');
+        }
+      }
+
+      function loadVideos() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(storageKey()) || '[]');
+          state.videos = Array.isArray(saved) ? saved : [];
+        } catch (_) {
+          state.videos = [];
+        }
+      }
+
+      function saveVideos() {
+        localStorage.setItem(storageKey(), JSON.stringify(state.videos));
+      }
+
+      function isUploadConfigured() {
+        if (!state.config.cloudName.trim()) return false;
+        if (state.config.authMode === 'unsigned') {
+          return Boolean(state.config.uploadPreset.trim());
+        }
+        return Boolean(state.config.apiKey.trim() && state.apiSecret.trim());
+      }
+
+      function updateStatusUI() {
+        const ready = isUploadConfigured();
+        dom.statusDot.classList.toggle('ready', ready);
+        dom.statusText.textContent = `Cloud: ${state.config.cloudName || '—'}`;
+        dom.setupBanner.classList.toggle('hidden', ready);
+        dom.modeLabel.textContent = state.config.authMode === 'unsigned'
+          ? `Mode: Unsigned (${state.config.uploadPreset || 'no preset'})`
+          : 'Mode: Signed (Session)';
+        dom.syncTagBadge.textContent = `Tag: ${state.config.syncTag || 'video_vault'}`;
+      }
+
+      function formatBytes(bytes) {
+        if (!bytes) return '—';
+        const units = ['B', 'KB', 'MB', 'GB'];
+        let i = 0;
+        let val = bytes;
+        while (val >= 1024 && i < units.length - 1) {
+          val /= 1024;
+          i++;
+        }
+        return `${val.toFixed(val >= 10 || i === 0 ? 0 : 1)} ${units[i]}`;
+      }
+
+      function formatDuration(sec) {
+        if (!sec && sec !== 0) return '';
+        const total = Math.round(sec);
+        const h = Math.floor(total / 3600);
+        const m = Math.floor((total % 3600) / 60);
+        const s = total % 60;
+        if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        return `${m}:${String(s).padStart(2, '0')}`;
+      }
+
+      function escapeHtml(str) {
+        return String(str || '').replace(/[&<>"']/g, (m) => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[m]);
+      }
+
+      function buildDeliveryUrl(video, quality) {
+        if (quality === 'original' && video.secure_url) return video.secure_url;
+        const cloud = video.cloud_name || state.config.cloudName;
+        const ver = video.version ? `v${video.version}/` : '';
+        const pid = video.public_id;
+        let trans = 'f_auto,q_auto';
+        if (quality === '720p') trans = 'c_limit,h_720,f_auto,q_auto';
+        else if (quality === '480p') trans = 'c_limit,h_480,f_auto,q_auto';
+        return `https://res.cloudinary.com/${encodeURIComponent(cloud)}/video/upload/${trans}/${ver}${pid}.mp4`;
+      }
+
+      function buildPosterUrl(video) {
+        const cloud = video.cloud_name || state.config.cloudName;
+        const ver = video.version ? `v${video.version}/` : '';
+        return `https://res.cloudinary.com/${encodeURIComponent(cloud)}/video/upload/so_auto,w_480,h_270,c_fill,q_auto,f_jpg/${ver}${video.public_id}.jpg`;
+      }
+
+      const fallbackThumb = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><rect width="320" height="180" fill="#0d1320"/><polygon points="140,60 140,120 195,90" fill="#38bdf8"/></svg>'
+      );
+
+      function renderLibrary() {
+        const q = dom.searchInput.value.trim().toLowerCase();
+        const sort = dom.sortSelect.value;
+
+        let list = state.videos.filter((v) => {
+          if (!q) return true;
+          const hay = [v.title, v.public_id, ...(v.tags || [])].join(' ').toLowerCase();
+          return hay.includes(q);
+        });
+
+        list.sort((a, b) => {
+          if (sort === 'oldest') return new Date(a.created_at || 0) - new Date(b.created_at || 0);
+          if (sort === 'largest') return (b.bytes || 0) - (a.bytes || 0);
+          if (sort === 'name') return (a.title || a.public_id).localeCompare(b.title || b.public_id);
+          return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+        });
+
+        dom.videoCount.textContent = String(state.videos.length);
+        dom.libraryList.innerHTML = '';
+
+        if (list.length === 0) {
+          dom.libraryList.innerHTML = `
+            <div class="note" style="text-align:center; padding:24px;">
+              ${state.videos.length === 0
+                ? 'No videos in storage yet. Upload a video or click <strong>Sync Tag List</strong> / <strong>Import Public ID</strong>.'
+                : 'No videos match your search filter.'}
+            </div>`;
+          return;
+        }
+
+        for (const video of list) {
+          const card = document.createElement('div');
+          card.className = `video-card ${video.public_id === state.activeId ? 'active' : ''}`;
+
+          const dur = formatDuration(video.duration);
+          const displayTitle = video.title || video.public_id.split('/').pop();
+          const res = video.width && video.height ? `${video.width}×${video.height}` : (video.format || 'video').toUpperCase();
+          const metaLine = [res, formatBytes(video.bytes)].filter((x) => x && x !== '—').join(' • ');
+
+          card.innerHTML = `
+            <div class="thumb-wrap">
+              <img src="${buildPosterUrl(video)}" alt="${escapeHtml(displayTitle)}" loading="lazy" onerror="this.src='${fallbackThumb}'" />
+              ${dur ? `<span class="duration-tag">${dur}</span>` : ''}
+            </div>
+            <div class="card-info">
+              <div>
+                <div class="card-title" title="${escapeHtml(video.public_id)}">${escapeHtml(displayTitle)}</div>
+                <div class="card-sub">${escapeHtml(metaLine || video.public_id)}</div>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-sm" data-action="play">▶ Play</button>
+                <button class="btn btn-sm" data-action="copy">Copy URL</button>
+                <button class="btn btn-sm" data-action="remove" title="Remove from local list">✕</button>
+              </div>
+            </div>
+          `;
+
+          card.addEventListener('click', (e) => {
+            const btn = e.target.closest('button');
+            if (!btn) {
+              selectVideo(video.public_id, true);
+              return;
+            }
+            const action = btn.dataset.action;
+            if (action === 'play') selectVideo(video.public_id, true);
+            else if (action === 'copy') copyVideoUrl(video);
+            else if (action === 'remove') removeLocalVideo(video.public_id);
+          });
+
+          dom.libraryList.appendChild(card);
+        }
+      }
+
+      function selectVideo(publicId, autoplay = false) {
+        const video = state.videos.find((v) => v.public_id === publicId);
+        state.activeId = video ? video.public_id : null;
+        renderLibrary();
+
+        if (!video) {
+          dom.videoPlayer.removeAttribute('src');
+          dom.videoPlayer.load();
+          dom.playerEmpty.style.display = 'flex';
+          dom.activeVideoBar.style.display = 'none';
+          return;
+        }
+
+        const url = buildDeliveryUrl(video, dom.qualitySelect.value);
+        const currentTime = dom.videoPlayer.dataset.pid === publicId ? dom.videoPlayer.currentTime : 0;
+
+        dom.playerEmpty.style.display = 'none';
+        dom.activeVideoBar.style.display = 'flex';
+        dom.videoPlayer.dataset.pid = publicId;
+        dom.videoPlayer.poster = buildPosterUrl(video);
+        dom.videoPlayer.src = url;
+        dom.videoPlayer.playbackRate = parseFloat(dom.speedSelect.value || '1');
+
+        if (currentTime > 0) {
+          dom.videoPlayer.addEventListener('loadedmetadata', () => {
+            dom.videoPlayer.currentTime = currentTime;
+          }, { once: true });
+        }
+
+        if (autoplay) {
+          dom.videoPlayer.play().catch(() => {});
+        }
+
+        const title = video.title || video.public_id.split('/').pop();
+        dom.activeTitle.textContent = title;
+        dom.downloadBtn.href = video.secure_url || url;
+
+        const badges = [];
+        if (video.width && video.height) badges.push(`<span class="badge">${video.width}×${video.height}</span>`);
+        if (video.duration) badges.push(`<span class="badge">${formatDuration(video.duration)}</span>`);
+        if (video.bytes) badges.push(`<span class="badge neutral">${formatBytes(video.bytes)}</span>`);
+        if (video.format) badges.push(`<span class="badge neutral">${escapeHtml(video.format.toUpperCase())}</span>`);
+        if (Array.isArray(video.tags)) {
+          video.tags.slice(0, 3).forEach((t) => badges.push(`<span class="badge neutral">#${escapeHtml(t)}</span>`));
+        }
+        dom.activeBadges.innerHTML = badges.join('');
+
+        const canRemoteDelete = Boolean(video.delete_token && (Date.now() - (video.uploaded_at_ms || 0) < 9.5 * 60 * 1000));
+        dom.deleteActiveBtn.textContent = canRemoteDelete ? 'Delete from Cloud' : 'Remove';
+        dom.deleteActiveBtn.title = canRemoteDelete
+          ? 'Deletes from Cloudinary using temporary delete_token (valid 10 min)'
+          : 'Removes from local library (permanent cloud delete requires Cloudinary Console)';
+      }
+
+      async function copyVideoUrl(video) {
+        const url = buildDeliveryUrl(video, dom.qualitySelect.value);
+        try {
+          await navigator.clipboard.writeText(url);
+          toast('Video URL copied to clipboard', 'success');
+        } catch {
+          toast('Copy failed — URL: ' + url, 'error');
+        }
+      }
+
+      function removeLocalVideo(publicId) {
+        state.videos = state.videos.filter((v) => v.public_id !== publicId);
+        saveVideos();
+        if (state.activeId === publicId) {
+          selectVideo(state.videos[0]?.public_id || null, false);
+        } else {
+          renderLibrary();
+        }
+      }
+
+      async function deleteActiveVideo() {
+        const video = state.videos.find((v) => v.public_id === state.activeId);
+        if (!video) return;
+
+        const canRemoteDelete = Boolean(video.delete_token && (Date.now() - (video.uploaded_at_ms || 0) < 9.5 * 60 * 1000));
+        if (canRemoteDelete) {
+          try {
+            const fd = new FormData();
+            fd.append('token', video.delete_token);
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${encodeURIComponent(state.config.cloudName)}/delete_by_token`, {
+              method: 'POST',
+              body: fd,
+            });
+            if (!res.ok) throw new Error('Delete token expired or rejected');
+            toast('Deleted video from Cloudinary', 'success');
+          } catch (err) {
+            toast(err.message || 'Cloud delete failed; removing locally', 'error');
+          }
+        } else {
+          toast('Removed from local library (delete permanently in Cloudinary Console)', 'info');
+        }
+        removeLocalVideo(video.public_id);
+      }
+
+      // Pure-JS SHA-1 fallback for file:// contexts without crypto.subtle
+      function sha1PureJs(str) {
+        const utf8 = unescape(encodeURIComponent(str));
+        const words = [];
+        for (let i = 0; i < utf8.length; i++) {
+          words[i >> 2] |= utf8.charCodeAt(i) << (24 - (i % 4) * 8);
+        }
+        words[utf8.length >> 2] |= 0x80 << (24 - (utf8.length % 4) * 8);
+        words[(((utf8.length + 8) >> 6) << 4) + 15] = utf8.length * 8;
+
+        let h0 = 0x67452301, h1 = 0xEFCDAB89, h2 = 0x98BADCFE, h3 = 0x10325476, h4 = 0xC3D2E1F0;
+        const w = new Array(80);
+        const rol = (n, c) => (n << c) | (n >>> (32 - c));
+
+        for (let i = 0; i < words.length; i += 16) {
+          let a = h0, b = h1, c = h2, d = h3, e = h4;
+          for (let j = 0; j < 80; j++) {
+            w[j] = j < 16 ? (words[i + j] | 0) : rol(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1);
+            let f, k;
+            if (j < 20) { f = (b & c) | ((~b) & d); k = 0x5A827999; }
+            else if (j < 40) { f = b ^ c ^ d; k = 0x6ED9EBA1; }
+            else if (j < 60) { f = (b & c) | (b & d) | (c & d); k = 0x8F1BBCDC; }
+            else { f = b ^ c ^ d; k = 0xCA62C1D6; }
+            const t = (rol(a, 5) + f + e + k + w[j]) | 0;
+            e = d; d = c; c = rol(b, 30); b = a; a = t;
+          }
+          h0 = (h0 + a) | 0; h1 = (h1 + b) | 0; h2 = (h2 + c) | 0; h3 = (h3 + d) | 0; h4 = (h4 + e) | 0;
+        }
+        return [h0, h1, h2, h3, h4].map((h) => (h >>> 0).toString(16).padStart(8, '0')).join('');
+      }
+
+      async function sha1Hex(message) {
+        if (window.crypto?.subtle) {
+          const buf = new TextEncoder().encode(message);
+          const hash = await crypto.subtle.digest('SHA-1', buf);
+          return Array.from(new Uint8Array(hash)).map((b) => b.toString(16).padStart(2, '0')).join('');
+        }
+        return sha1PureJs(message);
+      }
+
+      async function buildAuthParams(baseParams) {
+        if (state.config.authMode === 'unsigned') {
+          return { ...baseParams, upload_preset: state.config.uploadPreset.trim() };
+        }
+        const timestamp = Math.floor(Date.now() / 1000);
+        const signable = { ...baseParams, return_delete_token: 'true', timestamp };
+        const serialized = Object.keys(signable)
+          .filter((k) => signable[k] !== undefined && signable[k] !== '')
+          .sort()
+          .map((k) => `${k}=${signable[k]}`)
+          .join('&');
+        const signature = await sha1Hex(serialized + state.apiSecret.trim());
+        return {
+          ...signable,
+          api_key: state.config.apiKey.trim(),
+          signature,
+        };
+      }
+
+      function upsertVideo(record) {
+        const idx = state.videos.findIndex((v) => v.public_id === record.public_id);
+        if (idx >= 0) {
+          state.videos[idx] = { ...state.videos[idx], ...record };
+        } else {
+          state.videos.unshift(record);
+        }
+        saveVideos();
+        renderLibrary();
+      }
+
+      function normalizeUploadResponse(res, fallbackTitle) {
+        const caption = res.context?.custom?.caption || fallbackTitle || '';
+        return {
+          public_id: res.public_id,
+          version: res.version,
+          format: res.format || 'mp4',
+          width: res.width,
+          height: res.height,
+          duration: res.duration,
+          bytes: res.bytes,
+          secure_url: res.secure_url,
+          created_at: res.created_at || new Date().toISOString(),
+          tags: res.tags || [],
+          title: caption || res.original_filename || res.public_id.split('/').pop(),
+          cloud_name: state.config.cloudName,
+          delete_token: res.delete_token || null,
+          uploaded_at_ms: Date.now(),
+        };
+      }
+
+      function uploadSingleRequest(url, formData, headers, onProgress, registerAbort) {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          registerAbort(() => xhr.abort());
+          xhr.open('POST', url);
+          Object.entries(headers || {}).forEach(([k, v]) => xhr.setRequestHeader(k, v));
+
+          xhr.upload.onprogress = (e) => {
+            if (e.lengthComputable) onProgress(e.loaded, e.total);
+          };
+          xhr.onload = () => {
+            try {
+              const data = JSON.parse(xhr.responseText || '{}');
+              if (xhr.status >= 200 && xhr.status < 300) resolve(data);
+              else reject(new Error(data.error?.message || `Upload failed (${xhr.status})`));
+            } catch {
+              reject(new Error(`Upload failed (${xhr.status})`));
+            }
+          };
+          xhr.onerror = () => reject(new Error('Network/CORS error during upload'));
+          xhr.onabort = () => reject(new Error('Upload cancelled'));
+          xhr.send(formData);
+        });
+      }
+
+      async function handleFiles(fileList) {
+        if (!isUploadConfigured()) {
+          toast('Please configure an Unsigned Preset or Signed Secret in Settings first.', 'error');
+          openModal(dom.settingsModal);
+          return;
+        }
+
+        const files = Array.from(fileList).filter((f) => f.type.startsWith('video/') || /\.(mp4|mov|webm|mkv|avi|m4v)$/i.test(f.name));
+        if (files.length === 0) {
+          toast('Please select valid video files.', 'error');
+          return;
+        }
+
+        const titleInput = dom.uploadTitleInput.value.trim();
+        const tags = dom.uploadTagsInput.value.trim() || state.config.syncTag || 'video_vault';
+        const folder = dom.uploadFolderInput.value.trim();
+
+        for (const file of files) {
+          await uploadVideoFile(file, { title: titleInput, tags, folder });
+        }
+      }
+
+      async function uploadVideoFile(file, opts) {
+        const queueItem = document.createElement('div');
+        queueItem.className = 'queue-item';
+        const itemTitle = opts.title || file.name.replace(/\.[^/.]+$/, '');
+
+        queueItem.innerHTML = `
+          <div class="queue-row">
+            <strong style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(file.name)}</strong>
+            <span class="status-span" style="color:var(--text-muted); flex-shrink:0;">0%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+          <div class="queue-row" style="font-size:0.76rem; color:var(--text-muted);">
+            <span>${formatBytes(file.size)}${file.size > CHUNK_THRESHOLD ? ' • Chunked' : ''}</span>
+            <button class="btn btn-sm cancel-btn">Cancel</button>
+          </div>
+        `;
+        dom.uploadQueue.prepend(queueItem);
+
+        const statusSpan = queueItem.querySelector('.status-span');
+        const fill = queueItem.querySelector('.progress-fill');
+        const cancelBtn = queueItem.querySelector('.cancel-btn');
+
+        let abortFn = null;
+        let cancelled = false;
+        cancelBtn.addEventListener('click', () => {
+          cancelled = true;
+          if (abortFn) abortFn();
+        });
+
+        try {
+          const baseParams = { tags: opts.tags };
+          if (opts.folder) baseParams.folder = opts.folder;
+          if (opts.title) baseParams.context = `caption=${opts.title.replace(/[|=]/g, ' ')}`;
+
+          const authParams = await buildAuthParams(baseParams);
+          const endpoint = `https://api.cloudinary.com/v1_1/${encodeURIComponent(state.config.cloudName)}/video/upload`;
+
+          let result;
+          if (file.size <= CHUNK_THRESHOLD) {
+            const fd = new FormData();
+            Object.entries(authParams).forEach(([k, v]) => fd.append(k, String(v)));
+            fd.append('file', file);
+
+            result = await uploadSingleRequest(
+              endpoint,
+              fd,
+              {},
+              (loaded, total) => {
+                const pct = Math.min(100, Math.round((loaded / total) * 100));
+                fill.style.width = `${pct}%`;
+                statusSpan.textContent = `${pct}%`;
+              },
+              (fn) => { abortFn = fn; }
+            );
+          } else {
+            const uniqueId = `cv-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+            const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+
+            for (let i = 0; i < totalChunks; i++) {
+              if (cancelled) throw new Error('Upload cancelled');
+              const start = i * CHUNK_SIZE;
+              const end = Math.min(file.size, start + CHUNK_SIZE);
+              const chunk = file.slice(start, end);
+
+              const fd = new FormData();
+              Object.entries(authParams).forEach(([k, v]) => fd.append(k, String(v)));
+              fd.append('file', chunk, file.name);
+
+              result = await uploadSingleRequest(
+                endpoint,
+                fd,
+                {
+                  'X-Unique-Upload-Id': uniqueId,
+                  'Content-Range': `bytes ${start}-${end - 1}/${file.size}`,
+                },
+                (loaded) => {
+                  const overall = Math.min(100, Math.round(((start + loaded) / file.size) * 100));
+                  fill.style.width = `${overall}%`;
+                  statusSpan.textContent = `${overall}% (${i + 1}/${totalChunks})`;
+                },
+                (fn) => { abortFn = fn; }
+              );
+            }
+          }
+
+          const record = normalizeUploadResponse(result, itemTitle);
+          upsertVideo(record);
+          selectVideo(record.public_id, true);
+
+          fill.style.width = '100%';
+          statusSpan.textContent = 'Done';
+          statusSpan.style.color = 'var(--success)';
+          cancelBtn.remove();
+          toast(`Uploaded "${record.title}"`, 'success');
+          setTimeout(() => queueItem.remove(), 3500);
+        } catch (err) {
+          statusSpan.textContent = err.message;
+          statusSpan.style.color = 'var(--danger)';
+          cancelBtn.textContent = 'Dismiss';
+          cancelBtn.onclick = () => queueItem.remove();
+          toast(err.message, 'error');
+        }
+      }
+
+      async function syncTaggedVideos() {
+        const cloud = state.config.cloudName.trim();
+        const tag = (state.config.syncTag || 'video_vault').trim();
+        if (!cloud || !tag) return;
+
+        dom.syncHint.style.display = 'none';
+        const url = `https://res.cloudinary.com/${encodeURIComponent(cloud)}/video/list/${encodeURIComponent(tag)}.json?_t=${Date.now()}`;
+
+        try {
+          const res = await fetch(url);
+          if (!res.ok) {
+            if (res.status === 401 || res.status === 403) {
+              dom.syncHint.style.display = 'block';
+              dom.syncHint.innerHTML = `<strong>Tag sync restricted (${res.status}):</strong> In Cloudinary Console go to <em>Settings → Security → Restricted image types</em> and uncheck <strong>Resource list</strong> to enable public JSON listing for tag <code>${escapeHtml(tag)}</code>.`;
+              return;
+            }
+            if (res.status === 404) {
+              toast(`No videos found on Cloudinary yet with tag "${tag}"`, 'info');
+              return;
+            }
+            throw new Error(`Sync failed (${res.status})`);
+          }
+
+          const data = await res.json();
+          const resources = Array.isArray(data.resources) ? data.resources : [];
+          let added = 0;
+
+          for (const item of resources) {
+            const exists = state.videos.some((v) => v.public_id === item.public_id);
+            const caption = item.context?.custom?.caption || '';
+            upsertVideo({
+              public_id: item.public_id,
+              version: item.version,
+              format: item.format || 'mp4',
+              width: item.width,
+              height: item.height,
+              duration: item.duration,
+              bytes: item.bytes,
+              created_at: item.created_at,
+              tags: item.tags || [tag],
+              title: caption || item.public_id.split('/').pop(),
+              cloud_name: cloud,
+            });
+            if (!exists) added++;
+          }
+
+          if (!state.activeId && state.videos[0]) {
+            selectVideo(state.videos[0].public_id, false);
+          }
+          toast(`Synced ${resources.length} tagged video(s)${added ? ` (${added} new)` : ''}`, 'success');
+        } catch (err) {
+          toast(err.message || 'Could not sync tag list', 'error');
+        }
+      }
+
+      // Modals
+      function openModal(modal) { modal.classList.add('open'); }
+      function closeModal(modal) { modal.classList.remove('open'); }
+
+      function populateSettingsModal() {
+        el('cfgCloudName').value = state.config.cloudName;
+        el('cfgAuthMode').value = state.config.authMode;
+        el('cfgUploadPreset').value = state.config.uploadPreset;
+        el('cfgApiKey').value = state.config.apiKey;
+        el('cfgApiSecret').value = state.apiSecret;
+        el('cfgSyncTag').value = state.config.syncTag;
+        toggleAuthFields();
+      }
+
+      function toggleAuthFields() {
+        const signed = el('cfgAuthMode').value === 'signed';
+        el('unsignedFields').style.display = signed ? 'none' : 'flex';
+        el('signedFields').style.display = signed ? 'flex' : 'none';
+      }
+
+      function parseCloudinaryUrl() {
+        const raw = el('quickUrlInput').value.trim();
+        const match = raw.match(/^cloudinary:\/\/([^:]+):([^@]+)@([^/\s]+)$/i);
+        if (!match) {
+          toast('Invalid format. Expected cloudinary://api_key:api_secret@cloud_name', 'error');
+          return;
+        }
+        el('cfgApiKey').value = match[1];
+        el('cfgApiSecret').value = match[2];
+        el('cfgCloudName').value = match[3];
+        el('cfgAuthMode').value = 'signed';
+        toggleAuthFields();
+        el('quickUrlInput').value = '';
+        toast('Parsed into Signed session fields (save to apply)', 'success');
+      }
+
+      function importManualVideo() {
+        let input = el('importPublicId').value.trim();
+        const title = el('importTitle').value.trim();
+        if (!input) {
+          toast('Enter a Public ID or Cloudinary URL', 'error');
+          return;
+        }
+
+        let cloud = state.config.cloudName;
+        let publicId = input;
+        let format = 'mp4';
+
+        const urlMatch = input.match(/^https?:\/\/res\.cloudinary\.com\/([^/]+)\/video\/upload\/(?:.*\/)?(?:v\d+\/)?(.+?)(?:\.([a-z0-9]+))?(?:\?.*)?$/i);
+        if (urlMatch) {
+          cloud = urlMatch[1];
+          publicId = urlMatch[2];
+          format = urlMatch[3] || 'mp4';
+        } else {
+          publicId = publicId.replace(/\.[a-z0-9]+$/i, '');
+        }
+
+        const record = {
+          public_id: publicId,
+          title: title || publicId.split('/').pop(),
+          format,
+          cloud_name: cloud,
+          created_at: new Date().toISOString(),
+          tags: ['imported'],
+          secure_url: input.startsWith('http') ? input : undefined,
+        };
+
+        upsertVideo(record);
+        selectVideo(record.public_id, true);
+        el('importPublicId').value = '';
+        el('importTitle').value = '';
+        closeModal(dom.importModal);
+        toast('Video added to library', 'success');
+      }
+
+      // Wire events
+      el('openSettingsBtn').onclick = () => { populateSettingsModal(); openModal(dom.settingsModal); };
+      el('bannerSettingsBtn').onclick = () => { populateSettingsModal(); openModal(dom.settingsModal); };
+      el('closeSettingsBtn').onclick = () => closeModal(dom.settingsModal);
+      el('cfgAuthMode').onchange = toggleAuthFields;
+      el('parseUrlBtn').onclick = parseCloudinaryUrl;
+
+      el('clearSecretBtn').onclick = () => {
+        state.apiSecret = '';
+        el('cfgApiSecret').value = '';
+        sessionStorage.removeItem('cv_api_secret');
+        toast('Session API Secret cleared', 'info');
+      };
+
+      el('saveSettingsBtn').onclick = () => {
+        state.config.cloudName = el('cfgCloudName').value.trim() || 'f4iuzezb';
+        state.config.authMode = el('cfgAuthMode').value;
+        state.config.uploadPreset = el('cfgUploadPreset').value.trim();
+        state.config.apiKey = el('cfgApiKey').value.trim();
+        state.config.syncTag = el('cfgSyncTag').value.trim() || 'video_vault';
+        state.apiSecret = el('cfgApiSecret').value.trim();
+
+        saveConfig();
+        loadVideos();
+        updateStatusUI();
+        renderLibrary();
+        closeModal(dom.settingsModal);
+        toast('Settings saved', 'success');
+      };
+
+      el('importBtn').onclick = () => openModal(dom.importModal);
+      el('closeImportBtn').onclick = () => closeModal(dom.importModal);
+      el('cancelImportBtn').onclick = () => closeModal(dom.importModal);
+      el('confirmImportBtn').onclick = importManualVideo;
+
+      el('syncBtn').onclick = syncTaggedVideos;
+      dom.searchInput.oninput = renderLibrary;
+      dom.sortSelect.onchange = renderLibrary;
+
+      dom.qualitySelect.onchange = () => {
+        if (state.activeId) selectVideo(state.activeId, !dom.videoPlayer.paused);
+      };
+
+      dom.speedSelect.onchange = () => {
+        dom.videoPlayer.playbackRate = parseFloat(dom.speedSelect.value || '1');
+      };
+
+      dom.pipBtn.onclick = async () => {
+        try {
+          if (document.pictureInPictureElement) await document.exitPictureInPicture();
+          else if (dom.videoPlayer.readyState >= 1) await dom.videoPlayer.requestPictureInPicture();
+        } catch {
+          toast('Picture-in-Picture unavailable for this video', 'error');
+        }
+      };
+
+      dom.copyUrlBtn.onclick = () => {
+        const active = state.videos.find((v) => v.public_id === state.activeId);
+        if (active) copyVideoUrl(active);
+      };
+
+      dom.deleteActiveBtn.onclick = deleteActiveVideo;
+
+      // Dropzone & file input
+      dom.dropzone.onclick = () => dom.fileInput.click();
+      dom.dropzone.onkeydown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          dom.fileInput.click();
+        }
+      };
+      dom.fileInput.onchange = (e) => {
+        if (e.target.files?.length) handleFiles(e.target.files);
+        e.target.value = '';
+      };
+
+      ['dragenter', 'dragover'].forEach((ev) => {
+        dom.dropzone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dom.dropzone.classList.add('dragover');
+        });
+      });
+      ['dragleave', 'drop'].forEach((ev) => {
+        dom.dropzone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dom.dropzone.classList.remove('dragover');
+        });
+      });
+      dom.dropzone.addEventListener('drop', (e) => {
+        if (e.dataTransfer?.files?.length) handleFiles(e.dataTransfer.files);
+      });
+
+      // Init
+      loadConfig();
+      loadVideos();
+      updateStatusUI();
+      renderLibrary();
+      if (state.videos[0]) selectVideo(state.videos[0].public_id, false);
+    })();
+  </script>
+</body>
+</html>
